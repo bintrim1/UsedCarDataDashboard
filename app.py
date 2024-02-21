@@ -2,7 +2,6 @@ import pandas as pd
 import streamlit as st
 import plotly.express as px
 import altair as alt
-import math
 
 st.header('Used Car Data')
 st.write('Filter the data below to take a deeper look')
