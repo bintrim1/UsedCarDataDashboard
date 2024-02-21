@@ -7,3 +7,6 @@ You will be asked to develop and deploy a web application to a cloud service so 
 In this project, we will provide you with the dataset on car sales advertisements, which you’ve already worked with in the past.
 The project is split into several steps that replicate the process described in our blog post here, but we will be using the Render platform instead of Heroku.
 Blog post URL: https://www.tripleten.blog/posts/deploying-data-science-web-apps-to-the-cloud
+
+Dashboard can be found at:
+https://usedcardatadashboard.onrender.com
