@@ -45,6 +45,7 @@ used_car_sales['odometer'] = used_car_sales.apply(
     lambda row: mean_miles[row['model_plus_year']] if pd.isnull(row['odometer']) else row['odometer'], 
     axis=1
 )
+used_car_sales['odometer'] = used_car_sales['odometer'].round(0)
 
 used_car_sales['age'] = 2024 - used_car_sales['model_year']
 
