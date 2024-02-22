@@ -7,7 +7,8 @@ st.header('Used Car Data')
 st.write('Filter the data below to take a deeper look')
 
 used_car_sales = pd.read_csv("vehicles_us.csv")
-used_car_sales['age'] = 2024 - used_car_sales['model_year']
+
+# cleaning up/enhancing the dataset
 
 # creating a function to return the first word in used_car_sales['model'] 
 # and return it to store the manufacturer
@@ -18,6 +19,36 @@ def extract_manufacturer(n):
     return manufacturer
 
 used_car_sales['manufacturer'] = used_car_sales['model'].apply(extract_manufacturer)
+
+# filling blank values in 'is_4wd' with 0, to represent no 4wd
+used_car_sales['is_4wd'] = used_car_sales['is_4wd'].fillna(0)
+
+# filling in model_year with median year for each model
+median_year = used_car_sales.groupby('model')['model_year'].median()
+used_car_sales['model_year'] = used_car_sales.apply(
+    lambda row: median_year[row['model']] if pd.isnull(row['model_year']) else row['model_year'], 
+    axis=1
+)
+
+# Filling in cylinders with median cylinders for each model
+median_cylinders = used_car_sales.groupby('model')['cylinders'].median()
+used_car_sales['cylinders'] = used_car_sales.apply(
+    lambda row: median_cylinders[row['model']] if pd.isnull(row['cylinders']) else row['cylinders'], 
+    axis=1
+)
+
+# to fill nulls for odometer, we'll want to get the mean value for the model AND year, so we can have a more accurate value
+# we'll create a new column of model_plus_year
+used_car_sales['model_plus_year'] = used_car_sales['model_year'].astype(str) + used_car_sales['model']
+mean_miles = used_car_sales.groupby('model_plus_year')['odometer'].mean()
+used_car_sales['odometer'] = used_car_sales.apply(
+    lambda row: mean_miles[row['model_plus_year']] if pd.isnull(row['odometer']) else row['odometer'], 
+    axis=1
+)
+
+used_car_sales['age'] = 2024 - used_car_sales['model_year']
+
+# beginning the streamlit design
 
 manufacturer_choice = used_car_sales['manufacturer'].unique()
 
